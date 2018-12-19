@@ -1,0 +1,21 @@
+The script kmercount.py has a small pdf manual.
+Examples Kmercount.py (needs python3)
+kmercount.py -f ViralGenomes.fna -k "TTAGGG,GGGGGGGG,TCAAGCTTGA,TCCTGGCGGGGAGT,WKKVGGGG,CCNDDNNGGG" -o Out_count_phage_NoOver.txt -r -g Out1.txt -s 1 --disable_overlapping
+kmercount.py -f ViralGenomes.fna -k "TCGN{5,10}CG" -o Out_5-10N_NoOverlap.txt -r --disable_overlapping
+kmercount.py -f ViralGenomes.fna -k "TCGN{11,15}CG" -o Out_11-15N_NoOverlap.txt -r --disable_overlapping
+kmercount.py -f ViralGenomes.fna -k "TCGN{16,30}CG" -o Out_16-30N_NoOverlap.txt -r --disable_overlapping
+
+
+The Scripts GetNucFrequency_Norm_PerSeq.pl and GetNucFrequency_Norm_PerFile.pl, the difference is that "PerFile" generates one output for the whole file (multiple contigs of a single genome), while the other one generates one file with one output line per fasta sequence (where you have multiple genomes per file).
+
+To run:
+GetNucFrequency_Norm_PerSeq.pl FastaFile > Outfile. 
+The outfile will be a tab delimited file with the norm frequencies (biases) for all K=2,3,4 mers in the sequences.
+
+The scripts GetNucFrequency_PerFile_varK.pl and GetNucFrequency_PerSeq_varK.pl works the same way as the other ones by File or by Sequence in a multicast file.
+To Run: GetNucFrequency.pl FastaFile MaxK > Outfile
+Where MaxK is the K up to where you want to count the frequencies, the computing increases exponentially with K. If MaxK is 6, then it will print a tab delimited file with the sequences as columns and the frequency for the selected k-mers as rows for all the k-mers from monomers to K=6.
+
+The script Get-kmer-bias.pl receives two inputs, first the output of GetNucFrequency_PerFile_varK.pl or GetNucFrequency_PerSeq_varK.pl (TableFile) and second a quote encompassed list of k-mers to calculate the bias. For example "GGGCGGG,GGGAGGG,GGGATGGG". Those k-mers must be included in the TableFile.
+
+To Run: GetNucFrequency.pl TableFile K-mer > Outfile
