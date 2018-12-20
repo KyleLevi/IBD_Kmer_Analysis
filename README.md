@@ -1,9 +1,11 @@
 # IBD_Kmer_Analysis
 
 The code should be able to run the code like this:
+
 ```perl GetNucFrequency_PerSeq_varK.pl ./GCF_000403175.fna 4 > GCF_000403175.4mers```
 
 and then you can count the bias:
+
 ```perl kmerbias.pl GCF_000403175.4mers "GGCC,GGCG,GGGC"```
 
 The first output file is GCF_00403175.4mers
