@@ -14,6 +14,21 @@ my @all_kmer=split /,/, $kmero;
 my %khash=();
 
 
+#############################################################################
+#                                                                           #
+#   Read the output from GetNucFrequency_PerSeq_varK.pl                     #
+#                                                                           #
+#   We read the first line into $first, and then split it into an array     #
+#   called @names.                                                          #
+#                                                                           #
+#                                                                           #
+#                                                                           #
+#                                                                           #
+#                                                                           #
+#
+# This reads the file GCF_000403175.4mers
+# The
+
 open(IN, "<$file1") or die ("Couldn't open file $file1\n");
 my $first =<IN>;
 chomp ($first);
@@ -44,12 +59,15 @@ foreach my $h (@all_kmer){
   }
   print "$h";
 
+  print STDERR "POSKMER: @poskmer\n";
+
   foreach my $l (@samples){
       #print "En muestra $l\n";
       my $ksize=scalar(@kmer);
       my $current=0;
       my $cumulative=1;
       unless ($khash{$l}{$h} && $khash{$l}{$h}>0) {
+	      print STDERR "Got a cumulative when L: $l and H: $h and $khash{$l}{$h}\n";
         $cumulative=0;
         print "\t$cumulative";
         next;
@@ -61,7 +79,7 @@ foreach my $h (@all_kmer){
               my $testk="";
               my $startEnd = ($c->[-1]-$c->[0])+1;
               my $size = scalar(@{$c});
-              #print "Startend es $startEnd y size $size\n";
+              print STDERR "c: @$c Startend es $startEnd y size $size\n";
               if ($startEnd > $size) {
                   #Para cada posible K-mero debe sumar las probabilidades y esa suma es el kmero por el cual va a multiplicar.
                   #For each possible K-mer you must add the probabilities and that sum is the cell by which you will multiply.
@@ -86,10 +104,14 @@ foreach my $h (@all_kmer){
                     repN($testk, $testk, $l);
                   }
               }else{
+		      print STDERR "GEtting testk from ", $c->[0], " to ", $c->[-1], " :: ";
                   for (my $t=$c->[0]; $t<=$c->[-1]; $t++){
                     $testk.=$kmer[$t];
+			  print STDERR " $t ($testk) ";
                   }
+		  print STDERR "\n";
               }
+	      print STDERR "AT this point: s: $l testk : $testk score: $cumulative khash: $khash{$l}{$testk} current: $current\n";
               if ($current==0) {
                   #print "Va a multiplicar por freq >$testk<\n";
                   $cumulative*=$khash{$l}{$testk};
@@ -101,6 +123,7 @@ foreach my $h (@all_kmer){
                     $cumulative= $cumulative/=$khash{$l}{$testk};
                   #}
               }
+	      print STDERR "AT this point: s: $l testk : $testk score: $cumulative khash: $khash{$l}{$testk} current: $current\n";
           }
           $current= $current==0 ? 1 : 0;
       }
@@ -121,7 +144,7 @@ sub repN {
       repN($a, $original, $sample);
     }else{
       $khash{$sample}{$original}+=$khash{$sample}{$a};
-      #print "$a\t$original\n";
+      print STDERR "$a\t$original\n";
 
     }
     my $t=$n;
@@ -130,7 +153,7 @@ sub repN {
       repN($t, $original, $sample);
     }else{
       $khash{$sample}{$original}+=$khash{$sample}{$t};
-      #print "$t\t$original\n";
+      print STDERR "$t\t$original\n";
     }
     my $c=$n;
     $c=~s/N/C/;
@@ -138,7 +161,7 @@ sub repN {
       repN($c, $original, $sample);
     }else{
       $khash{$sample}{$original}+=$khash{$sample}{$c};
-      #print "$c\t$original\n";
+      print STDERR "$c\t$original\n";
     }
     my $g=$n;
     $g=~s/N/G/;
@@ -146,7 +169,7 @@ sub repN {
       repN($g, $original, $sample);
     }else{
       $khash{$sample}{$original}+=$khash{$sample}{$g};
-      #print "$g\t$original\n";
+      print STDERR "$g\t$original\n";
     }
   }
 }
