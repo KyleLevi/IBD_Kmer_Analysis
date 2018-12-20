@@ -3,8 +3,10 @@
 ## Python Implementaion - Thanks Rob!
 The python kmerbias should function the same as the perl kmerbias, both depend on the output from GetNucFrequency_PerSeq_varK.pl (GCF_000403175.4mers is an example output file)
 
-```python3 kmerbias.py -f GCF_000403175.4mers -k GGCC,GCGC -v > pyout
-perl kmerbias.pl GCF_000403175.4mers "GGCC,GCGC"  > plout```
+```
+python3 kmerbias.py -f GCF_000403175.4mers -k GGCC,GCGC -v > pyout
+perl kmerbias.pl GCF_000403175.4mers "GGCC,GCGC"  > plout
+```
 
 plout and pyout are not identical because of the floating point math, but they are close to several significant digits.
 
