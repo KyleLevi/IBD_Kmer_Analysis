@@ -69,13 +69,15 @@ def count_file(fname, **kwargs):
     gc_count = 0
     total_bases = 0
     for seq in fastq_seqs(fname):
-
+        if "N" in seq:
+            continue
         if do_motifs:
             for k,v in dict_motifs.items():
                 found_motifs = re.findall(v, seq)
                 motif_counts[k] = motif_counts.get(k, 0) + len(found_motifs)
 
         seq = seq.replace('\n', '')
+
         last_6 = []
         for char in seq:
             total_bases += 1
