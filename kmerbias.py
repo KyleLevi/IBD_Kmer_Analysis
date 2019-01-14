@@ -58,7 +58,7 @@ def process_all_kmers(kmers, khash, verbose=False):
     """
     Process and normalize all the k-mers
     :param kmers: an array of all the k-mers
-    :param khash: our dict of dicts we've parsed out
+    :param khash: our dict of dicts we've parsed all_and_unknown.tsv
     :param verbose: more output, but it is written to stderr
     :return:
     """
@@ -103,21 +103,21 @@ def process_all_kmers(kmers, khash, verbose=False):
                             khash = repN(testk, testk, s, khash, verbose)
                     else:
                         if verbose:
-                            sys.stderr.write(f"Getting testk from: {c[0]} to {c[-1]} ")
+                            # sys.stderr.write(f"Getting testk from: {c[0]} to {c[-1]} ")
                         for t in range(c[0], c[-1]+1):
                             testk += k[t]
                             if verbose:
-                                sys.stderr.write(f"{t} ({testk}) ")
+                                # sys.stderr.write(f"{t} ({testk}) ")
                         if verbose:
                             sys.stderr.write("\n")
                     if verbose:
-                        sys.stderr.write(f"At this point: s: {s}  testk: {testk} score: {score} khash: {khash[s][testk]} current: {current}\n")
+                        # sys.stderr.write(f"At this point: s: {s}  testk: {testk} score: {score} khash: {khash[s][testk]} current: {current}\n")
                     if 0 == current:
                         score *= khash[s][testk]
                     else:
                         score = score / khash[s][testk]
                     if verbose:
-                        sys.stderr.write(f"At this point: s: {s}  testk: {testk} score: {score} khash: {khash[s][testk]} current: {current}\n")
+                        # sys.stderr.write(f"At this point: s: {s}  testk: {testk} score: {score} khash: {khash[s][testk]} current: {current}\n")
                 if 0 == current:
                     current = 1
                 else:
@@ -144,7 +144,7 @@ if __name__ == "__main__":
 
     khash = read_kmer_counts(args.f)
 
-    # figure out all the kmers
+    # figure all_and_unknown.tsv all the kmers
     allkmers = set()
     for k in args.k:
         allkmers.update(k.split(","))
